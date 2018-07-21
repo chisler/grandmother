@@ -39,8 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'hello',
     'users',
+    'profiles',
     'rest_framework',
     'rest_framework.authtoken'
 ]
@@ -78,8 +78,11 @@ TEMPLATES = [
 REST_FRAMEWORK = {
   'DEFAULT_AUTHENTICATION_CLASSES': (
       'rest_framework.authentication.TokenAuthentication',
+      'rest_framework.authentication.SessionAuthentication',
+      'rest_framework.authentication.BasicAuthentication',
     )
 }
+
 
 AUTH_USER_MODEL = 'users.User'
 

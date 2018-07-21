@@ -1,10 +1,10 @@
-from django.conf.urls import include, url
+from django.conf.urls import url
 from django.urls import path
 
 from django.contrib import admin
 
 from users.api.views import UserCreate
-
+from rest_framework.authtoken import views as restframework_views
 admin.autodiscover()
 
 import hello.views
@@ -18,6 +18,7 @@ urlpatterns = [
     url(r'^db', hello.views.db, name='db'),
     # url(r'^users/', include('users.urls')),
     url(r'users/create/', UserCreate.as_view(), name='user-create'),
+    url(r'^api-token-auth/', restframework_views.obtain_auth_token),
     path('admin/', admin.site.urls),
 
 ]
