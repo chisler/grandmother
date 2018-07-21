@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     'users',
     'profiles',
     'rest_framework',
-    'rest_framework.authtoken'
+    'rest_framework.authtoken',
+    'subscription'
 ]
 
 # APPEND_SLASH=False
