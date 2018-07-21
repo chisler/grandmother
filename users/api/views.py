@@ -1,9 +1,13 @@
-from django.http import HttpResponse
-from rest_framework.views import APIView
-from rest_framework.response import Response
+from django.db.models import Count
 from rest_framework import status
-from users.serializers import UserSerializer
 from rest_framework.authtoken.models import Token
+from rest_framework.response import Response
+from rest_framework.views import APIView
+
+from subscription.models import Subscription
+from users.models import User
+from users.serializers import UserSerializer, UserProfileSerializer, TraderSerializer
+
 
 class UserCreate(APIView):
     """ 
@@ -21,4 +25,26 @@ class UserCreate(APIView):
                 return Response(json, status=status.HTTP_201_CREATED)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        
+
+
+
+class UserProfileGet(APIView):
+    def get(self, request, user_id, format='json'):
+        serializer = UserProfileSerializer(User.objects.get(id=user_id))
+        return Response(data=serializer.data)
+
+
+class GetTraders(APIView):
+    """ 
+    Get traders
+    """
+    def get(self, request, format='json'):
+        traders = User.objects.filter(role=User.TRADER)
+            #.annotate(is_followed=Count('book'))
+            # .exclude(
+            # id__in=Subscription.objects.filter(follower=user_id).values_list('user_followed_id', flat=True)
+        # )
+
+        serializer = TraderSerializer(traders, many=True)
+        return Response(data=serializer.data)
+

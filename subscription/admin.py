@@ -1,7 +1,6 @@
 from django.contrib import admin
 
-from subscription.models import Subscription, CurrencyBalance
-
+from subscription.models import Subscription, CurrencyBalance, DateBalance
 
 
 class CurrencyBalanceInline(admin.TabularInline):
@@ -13,7 +12,6 @@ class SubscriptionAdmin(admin.ModelAdmin):
     inlines = [
         CurrencyBalanceInline,
     ]
-
 
 
 admin.site.register(Subscription, SubscriptionAdmin)

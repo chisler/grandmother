@@ -6,7 +6,7 @@ class Subscription(models.Model):
     follower = models.ForeignKey(User, on_delete=models.CASCADE, related_name='subscription')
     user_followed = models.ForeignKey(User, on_delete=models.CASCADE, related_name='is_followed_by')
     money_allocated = models.FloatField()
-    initial_ration = models.FloatField()
+    initial_ratio = models.FloatField()
 
     def __str__(self):
         return f'{self.follower} is following {self.user_followed}'
@@ -25,3 +25,9 @@ class CurrencyBalance(models.Model):
 
     class Meta:
         unique_together = ('name', 'subscription')
+
+
+class DateBalance(models.Model):
+    user = models.ForeignKey(User, related_name='date_balances', on_delete=models.CASCADE)
+    balance = models.FloatField(default=0)
+    date = models.DateField()
