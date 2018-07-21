@@ -69,7 +69,7 @@ class TraderSerializer(serializers.Serializer):
         today = datetime.date.today()
         lastMonth = today - datetime.timedelta(days=30)
         
-        date_balances = obj.date_balances.filter(date__gte=lastMonth).order_by('-date')
+        date_balances = obj.date_balances.filter(date__gte=lastMonth).order_by('date')
         month_ago = date_balances.first().balance
         now = date_balances.last().balance
 
