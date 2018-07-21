@@ -10,7 +10,7 @@ class UserProfileGet(APIView):
     Creates the user. 
     """
 
-    def get(self, request, format='json'):
-        serializer = UserProfileSerializer(User.objects.get(id=2))
+    def get(self, request, user_id, format='json'):
+        serializer = UserProfileSerializer(User.objects.get(id=user_id))
         return Response(data=serializer.data)
 
