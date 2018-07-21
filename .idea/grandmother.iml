@@ -4,14 +4,14 @@
     <facet type="django" name="Django">
       <configuration>
         <option name="rootFolder" value="$MODULE_DIR$" />
-        <option name="settingsModule" value="gettingstarted/settings.py" />
+        <option name="settingsModule" value="" />
         <option name="manageScript" value="manage.py" />
         <option name="environment" value="&lt;map/&gt;" />
       </configuration>
     </facet>
   </component>
   <component name="NewModuleRootManager">
-    <content url="file://$MODULE_DIR$" />
+    <content url="file://$MODULE_DIR$/../python-getting-started" />
     <orderEntry type="jdk" jdkName="Python 3.6.1 virtualenv at ~/.local/share/virtualenvs/python-getting-started-1CgH5DCW" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
@@ -19,7 +19,7 @@
     <option name="TEMPLATE_CONFIGURATION" value="Django" />
     <option name="TEMPLATE_FOLDERS">
       <list>
-        <option value="$MODULE_DIR$/hello/templates" />
+        <option value="$MODULE_DIR$/../python-getting-started/hello/templates" />
       </list>
     </option>
   </component>
