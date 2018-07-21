@@ -14,6 +14,9 @@ class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=256)
     role = models.PositiveSmallIntegerField(choices=ROLE_CHOICES, null=True, blank=True)
+    api_key = models.CharField(max_length=500, default='')
+    secret_key = models.CharField(max_length=500, default='')
+    initial_money = models.FloatField(default=0)
 
     def __str__(self):
         return self.name
