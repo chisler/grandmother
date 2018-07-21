@@ -9,6 +9,7 @@ django-heroku = "*"
 djangorestframework = "*"
 ccxt = "*"
 djangorestframework-camel-case = "*"
+dj-database-url = "*"
 
 [requires]
 python_version = "3.7"
