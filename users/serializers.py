@@ -4,7 +4,7 @@ from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 
 from subscription.models import Subscription
-from subscription.serializers import SubscriptionSerializer
+from subscription.serializers import SubscriptionSerializer, DateBalanceSerializer
 from .models import User
 
 
@@ -63,7 +63,8 @@ class TraderSerializer(serializers.Serializer):
 
     is_followed = serializers.SerializerMethodField()
     month_growth =  serializers.SerializerMethodField() # monthly growth in percentage
-    followers_count =  serializers.SerializerMethodField() # monthly growth in percentage
+    followers_count =  serializers.SerializerMethodField()
+    date_balances = DateBalanceSerializer(many=True)
 
     def get_month_growth(self, obj):
         today = datetime.date.today()
@@ -83,4 +84,4 @@ class TraderSerializer(serializers.Serializer):
         return Subscription.objects.filter(user_followed=obj).count()
 
     class Meta:
-        fields = ('id', 'is_followed', 'growth', )
+        fields = ('id', 'is_followed', 'growth', 'data_balances')

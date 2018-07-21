@@ -1,7 +1,13 @@
 from rest_framework import serializers
 
-from subscription.models import Subscription
+from subscription.models import Subscription, DateBalance
 from users.models import User
+
+
+class DateBalanceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DateBalance
+        fields = ('date', 'balance', )
 
 
 class SubscriptionSerializer(serializers.ModelSerializer):
