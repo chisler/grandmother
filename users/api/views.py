@@ -3,8 +3,9 @@ from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from subscription.serializers import TraderSerializer
 from users.models import User
-from users.serializers import UserSerializer, UserProfileSerializer, TraderSerializer
+from users.serializers import UserSerializer, UserProfileSerializer
 
 
 class UserCreate(APIView):
