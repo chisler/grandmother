@@ -21,6 +21,4 @@ class UserCreate(APIView):
                 return Response(json, status=status.HTTP_201_CREATED)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-    # def get(self):
-    #     return HttpResponse()
+        

@@ -1,4 +1,4 @@
-from users.models import User
+from users.models import User, get_total_for_currency_balances
 from django.db import models
 
 
@@ -10,6 +10,12 @@ class Subscription(models.Model):
 
     def __str__(self):
         return f'{self.follower} is following {self.user_followed}'
+
+    def get_total_money(self):
+        from subscription.models import CurrencyBalance
+
+        currency_balances = CurrencyBalance.objects.filter(subscription=self)
+        return get_total_for_currency_balances(currency_balances)
 
 
 class CurrencyBalance(models.Model):

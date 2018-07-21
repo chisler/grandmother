@@ -8,6 +8,7 @@ gunicorn = "*"
 django-heroku = "*"
 djangorestframework = "*"
 ccxt = "*"
+djangorestframework-camel-case = "*"
 
 [requires]
 python_version = "3.7"

@@ -17,13 +17,8 @@ class Profile(models.Model):
     api_key = models.CharField(max_length=500, default='')
     secret_key = models.CharField(max_length=500, default='')
     initial_money = models.FloatField(default=0)
+    free_money = models.FloatField(default=0)
 
     def __str__(self):
         return self.name
 
-
-# @receiver(post_save, sender=User)
-# def create_or_update_user_profile(sender, instance, created, **kwargs):
-#     if created:
-#         Profile.objects.create(user=instance)
-#     instance.profile.save()

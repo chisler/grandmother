@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "8a9d1b96531bf0edba4067e3ea83224938fa38553df1feac45301eeb97730dc5"
+            "sha256": "b4094b743b65c1b5a9475b4ba1796f3281fa09797efed290c88484be45dcdff2"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -86,10 +86,10 @@
         },
         "ccxt": {
             "hashes": [
-                "sha256:ba77c151ba2b65bf7f990668f0c5b2661a637b3a77c6406c29f7e2a04888ed66",
-                "sha256:c0464967bc9f3ad6ae2ae2237adc8773d57d16693879fcad0bc2f90837f5b2c9"
+                "sha256:2737a4146c55ea0312c282d5484549c08870d8994f7262faea5fe6c20551f74c",
+                "sha256:a87b9ce357c7c9ca63f95746acffcfaf452ddc88a33f601de9e7605e168413fa"
             ],
-            "version": "==1.16.80"
+            "version": "==1.16.81"
         },
         "certifi": {
             "hashes": [
@@ -132,6 +132,12 @@
                 "sha256:c375e4f95a3a64fccac412e36fb42ba36881e52313ec021ef410b40f67cddca4"
             ],
             "version": "==3.8.2"
+        },
+        "djangorestframework-camel-case": {
+            "hashes": [
+                "sha256:989c5c2d0324069fc1ecea4a5cb8913749d5f2f3c507b38977913ff1b76a719e"
+            ],
+            "version": "==0.2.0"
         },
         "gunicorn": {
             "hashes": [
@@ -245,7 +251,6 @@
                 "sha256:63b52e3c866428a224f97cab011de738c36aec0185aa91cfacd418b5d58911d1",
                 "sha256:ec22d826a36ed72a7358ff3fe56cbd4ba69dd7a6718ffd450ff0e9df7a47ce6a"
             ],
-            "markers": "python_version != '3.0.*' and python_version != '3.3.*' and python_version < '4' and python_version >= '2.6' and python_version != '3.1.*' and python_version != '3.2.*'",
             "version": "==2.19.1"
         },
         "urllib3": {
@@ -253,7 +258,7 @@
                 "sha256:a68ac5e15e76e7e5dd2b8f94007233e01effe3e50e8daddf69acfd81cb686baf",
                 "sha256:b5725a0bd4ba422ab0e66e89e030c806576753ea3ee08554382c14e685d117b5"
             ],
-            "markers": "python_version != '3.0.*' and python_version != '3.3.*' and python_version < '4' and python_version >= '2.6' and python_version != '3.1.*' and python_version != '3.2.*'",
+            "markers": "python_version != '3.3.*' and python_version != '3.0.*' and python_version != '3.2.*' and python_version != '3.1.*' and python_version < '4' and python_version >= '2.6'",
             "version": "==1.23"
         },
         "whitenoise": {
