@@ -1,11 +1,11 @@
+import datetime
+
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 
+from subscription.models import Subscription
 from subscription.serializers import SubscriptionSerializer
 from .models import User
-from subscription.models import Subscription
-from .models import User
-import datetime
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -28,9 +28,6 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ('id', 'username', 'email', 'password')
 
 
-from rest_framework import serializers
-from rest_framework.validators import UniqueValidator
-
 
 
 class UserProfileSerializer(serializers.Serializer):
@@ -52,20 +49,38 @@ class UserProfileSerializer(serializers.Serializer):
         fields = ('total_money', 'start_money', 'subscription', 'free_money')
 
 
-class TraderSerializer(serializers.Serializer):
-    is_followed = serializers.SerializerMethodField()
-    growth =  serializers.SerializerMethodField() # monthly growth in percentage
+def get_change(current, previous):
+    if current == previous:
+        return 100.0
+    try:
+        return (abs(current - previous) / previous) * 100.0
+    except ZeroDivisionError:
+        return 0
 
-    def get_growth(self, obj):
+class TraderSerializer(serializers.Serializer):
+    id = serializers.IntegerField()
+    username = serializers.CharField(max_length=256)
+
+    is_followed = serializers.SerializerMethodField()
+    month_growth =  serializers.SerializerMethodField() # monthly growth in percentage
+    followers_count =  serializers.SerializerMethodField() # monthly growth in percentage
+
+    def get_month_growth(self, obj):
         today = datetime.date.today()
         lastMonth = today - datetime.timedelta(days=30)
         
-        date_balances = obj.date_balances.filter(date__gte=lastMonth).order_by('date')
-        diff = date_balances.last().balance - date_balances.first().balance
+        date_balances = obj.date_balances.filter(date__gte=lastMonth).order_by('-date')
+        month_ago = date_balances.first().balance
+        now = date_balances.last().balance
+
+        diff = get_change(now, month_ago) #month_ago #now / (month_ago / 100)
         return diff
 
     def get_is_followed(self, obj):
         return False
 
+    def get_followers_count(self, obj):
+        return Subscription.objects.filter(user_followed=obj).count()
+
     class Meta:
-        fields = ('is_followed', 'growth')
+        fields = ('id', 'is_followed', 'growth', )
