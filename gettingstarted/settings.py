@@ -45,7 +45,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken'
 ]
 
-APPEND_SLASH=False
+# APPEND_SLASH=False
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
