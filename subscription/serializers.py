@@ -81,8 +81,8 @@ def _create_orders(trader_wallets, initial_ratio, investor):
     #     eth_amount = amount * initial_ratio / price_eth_in_btc
     #     investor_exchange.market_order_sell('ETH/USDT', eth_amount * 0.95)  # fee
     #     trader_wallets.pop('BTC')
-
-    orders = [{currency: amount * initial_ratio} for (currency, amount) in trader_wallets.items()]
+    trader_wallets.pop('USDT') # do not trade with USDT
+    orders = [{'currency': currency + '/USDT', 'amount': amount * initial_ratio} for (currency, amount) in trader_wallets.items()]
     investor_exchange.batch_market_buy(orders)
 
 

@@ -28,6 +28,7 @@ class ExternalExchange:
                            currency_pair,
                            amount,
                            side):
+        print("Placing market order " + str(currency_pair) + ", amount = " + str(amount) + ", side = " + side)
         response = self.exchange.create_order(
             symbol=currency_pair,
             type='market',
