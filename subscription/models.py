@@ -8,6 +8,9 @@ class Subscription(models.Model):
     money_allocated = models.FloatField()
     initial_ratio = models.FloatField()
 
+    class Meta:
+        unique_together = ('follower', 'user_followed', )
+
     def __str__(self):
         return f'{self.follower} is following {self.user_followed}'
 
