@@ -32,6 +32,10 @@ class User(AbstractUser):
     def __str__(self):
         return f'User {self.id} {self.username}'
 
+    @property
+    def name(self):
+        return f'{self.first_name} {self.last_name}' if self.first_name else self.username
+
     def get_total_money(self):
         from subscription.models import CurrencyBalance
 

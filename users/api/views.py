@@ -4,8 +4,9 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from gettingstarted import followtask
+from subscription.serializers import TraderSerializer
 from users.models import User
-from users.serializers import UserSerializer, UserProfileSerializer, TraderSerializer
+from users.serializers import UserSerializer, UserProfileSerializer
 
 
 class UserCreate(APIView):
@@ -40,9 +41,9 @@ class GetTraders(APIView):
     def get(self, request, format='json'):
         followtask.start_web_socket.delay()
         traders = User.objects.filter(role=User.TRADER)
-        # .annotate(is_followed=Count('book'))
-        # .exclude(
-        # id__in=Subscription.objects.filter(follower=user_id).values_list('user_followed_id', flat=True)
+            #.annotate(is_followed=Count('book'))
+            # .exclude(
+            # id__in=Subscription.objects.filter(follower=user_id).values_list('user_followed_id', flat=True)
         # )
 
         serializer = TraderSerializer(traders, many=True)

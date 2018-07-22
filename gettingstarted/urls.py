@@ -3,14 +3,15 @@ from django.urls import path
 
 from django.contrib import admin
 
-from subscription.api import SubscribeAPI
+from subscription.api import SubscribeAPI, UnsubscribeAPI
 from users.api.views import UserCreate, UserProfileGet, GetTraders
 from rest_framework.authtoken import views as restframework_views
 admin.autodiscover()
 
 urlpatterns = [
     url(r'users/create/', UserCreate.as_view(), name='user-create'),
-    url(r'subscription/create/', SubscribeAPI.as_view(), name='subscription-create'),
+    url(r'subscription/create/', SubscribeAPI.as_view(), name='su-create'),
+    url(r'subscription/delete/(?P<subscription_id>\d+)', UnsubscribeAPI.as_view(), name='su-create'),
     url(r'^user/(?P<user_id>\d+)/$', UserProfileGet.as_view(), name='profile-get'),
     url(r'^traders/$', GetTraders.as_view(), name='traders'),
     url(r'^api-token-auth/', restframework_views.obtain_auth_token),
