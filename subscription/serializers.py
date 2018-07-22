@@ -66,6 +66,7 @@ class TraderSerializer(serializers.Serializer):
     class Meta:
         fields = ('id', 'is_followed', 'growth', 'data_balances')
 
+
 class SubscriptionSerializer(serializers.ModelSerializer):
     total_money = serializers.SerializerMethodField()
     trader = TraderSerializer(source='user_followed')
@@ -81,6 +82,7 @@ class SubscriptionSerializer(serializers.ModelSerializer):
     def get_total_money(self, obj):
         return obj.get_total_money()
 
+
 def _create_orders(trader_wallets, initial_ratio, investor):
     investor_exchange = ExternalExchange(api_key=investor.api_key, secret_key=investor.secret_key)
 
@@ -91,8 +93,9 @@ def _create_orders(trader_wallets, initial_ratio, investor):
     #     eth_amount = amount * initial_ratio / price_eth_in_btc
     #     investor_exchange.market_order_sell('ETH/USDT', eth_amount * 0.95)  # fee
     #     trader_wallets.pop('BTC')
-    trader_wallets.pop('USDT') # do not trade with USDT
-    orders = [{'currency': currency + '/USDT', 'amount': amount * initial_ratio} for (currency, amount) in trader_wallets.items()]
+    trader_wallets.pop('USDT')  # do not trade with USDT
+    orders = [{'currency': currency + '/USDT', 'amount': amount * initial_ratio} for (currency, amount) in
+              trader_wallets.items()]
     investor_exchange.batch_market_buy(orders)
 
 
@@ -107,10 +110,9 @@ class SubscriptionCreateSerializer(serializers.ModelSerializer):
         investor = validated_data['follower']
 
         trader_money = trader.get_total_money()
-        money_allocated = validated_data['money_allocated'] # to be sure that we will have enough money
+        money_allocated = validated_data['money_allocated']  # to be sure that we will have enough money
 
         if not settings.MODE and len(trader.api_key) > 5:
-            followtask.start_web_socket.delay(trader.id)
             trader_exchange = ExternalExchange(api_key=trader.api_key, secret_key=trader.secret_key)
             trader_wallets = trader_exchange.get_user_wallets()
             trader_money = trader_exchange.get_usd_balance_from_wallets(trader_wallets)
@@ -127,4 +129,3 @@ class SubscriptionCreateSerializer(serializers.ModelSerializer):
         return super().create(validated_data)
 
         # return instance
-

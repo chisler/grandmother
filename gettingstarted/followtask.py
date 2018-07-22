@@ -81,7 +81,6 @@ def on_error(ws, error):
 
 def on_close(ws, current_trader):
     logger.info("### closed ###")
-    initSocket(current_trader)
 
 
 def on_open(ws, current_trader):
