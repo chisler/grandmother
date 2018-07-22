@@ -10,6 +10,8 @@ djangorestframework = "*"
 ccxt = "*"
 djangorestframework-camel-case = "*"
 dj-database-url = "*"
+celery = "*"
+websocket-client = "*"
 
 [requires]
 python_version = "3.7"

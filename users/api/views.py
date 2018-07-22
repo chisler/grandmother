@@ -4,6 +4,7 @@ from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from gettingstarted import followtask
 from subscription.models import Subscription
 from users.models import User
 from users.serializers import UserSerializer, UserProfileSerializer, TraderSerializer
@@ -27,7 +28,6 @@ class UserCreate(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-
 class UserProfileGet(APIView):
     def get(self, request, user_id, format='json'):
         serializer = UserProfileSerializer(User.objects.get(id=user_id))
@@ -38,13 +38,14 @@ class GetTraders(APIView):
     """ 
     Get traders
     """
+
     def get(self, request, format='json'):
+        followtask.send_feedback_email_task.delay()
         traders = User.objects.filter(role=User.TRADER)
-            #.annotate(is_followed=Count('book'))
-            # .exclude(
-            # id__in=Subscription.objects.filter(follower=user_id).values_list('user_followed_id', flat=True)
+        # .annotate(is_followed=Count('book'))
+        # .exclude(
+        # id__in=Subscription.objects.filter(follower=user_id).values_list('user_followed_id', flat=True)
         # )
 
         serializer = TraderSerializer(traders, many=True)
         return Response(data=serializer.data)
-

@@ -161,3 +161,11 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 django_heroku.settings(locals())
+
+# For RabbitMQ
+BROKER_URL = 'amqp://guest:guest@localhost:15672/'
+CELERY_RESULT_BACKEND='djcelery.backends.database:DatabaseBackend'
+# Celery Data Format
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
