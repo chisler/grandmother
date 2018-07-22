@@ -27,6 +27,7 @@ class TraderSerializer(serializers.Serializer):
     id = serializers.IntegerField()
     username = serializers.CharField(max_length=256)
 
+    subscription_id = serializers.SerializerMethodField()
     is_followed = serializers.SerializerMethodField()
     month_growth = serializers.SerializerMethodField()  # monthly growth in percentage
     followers_count = serializers.SerializerMethodField()
@@ -42,6 +43,13 @@ class TraderSerializer(serializers.Serializer):
 
         diff = get_change(now, month_ago)  # month_ago #now / (month_ago / 100)
         return diff
+
+    def get_subscription_id(self, obj):
+        sub = Subscription.objects.filter(follower_id=settings.SAMPLE_USER, user_followed=obj.id)
+        if sub:
+            return sub.first().id
+
+        return None
 
     def get_is_followed(self, obj):
         return Subscription.objects.filter(follower_id=settings.SAMPLE_USER, user_followed=obj.id).exists()
