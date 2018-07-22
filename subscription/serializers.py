@@ -54,10 +54,14 @@ class TraderSerializer(serializers.Serializer):
 class SubscriptionSerializer(serializers.ModelSerializer):
     total_money = serializers.SerializerMethodField()
     trader = TraderSerializer(source='user_followed')
+    name = serializers.SerializerMethodField()
 
     class Meta:
         model = Subscription
-        fields = ('user_followed_id', 'money_allocated', 'initial_ratio', 'total_money', 'trader')
+        fields = ('id', 'user_followed_id', 'money_allocated', 'initial_ratio', 'total_money', 'trader', 'name')
+
+    def get_name(self, obj):
+        return obj.user_followed.name
 
     def get_total_money(self, obj):
         return obj.get_total_money()
