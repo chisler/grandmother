@@ -1,6 +1,6 @@
+import websocket
 from celery import shared_task
 from celery.utils.log import get_task_logger
-import websocket
 from psycopg2._json import Json
 
 try:
@@ -28,8 +28,8 @@ def on_open(ws):
 
 
 
-@shared_task(name="send_feedback_email_task")
-def send_feedback_email_task():
+@shared_task(name="start_web_socket")
+def start_web_socket():
     websocket.enableTrace(True)
     ws = websocket.WebSocketApp("wss://api.bitfinex.com/ws/",
                               on_message = on_message,

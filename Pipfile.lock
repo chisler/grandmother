@@ -332,7 +332,7 @@
                 "sha256:f00d067a08836c03646ace00baaf59697e978d2f1958b090c3a098c59221e175",
                 "sha256:f96d8bd39ee85cb9e842e3c7ad8c7cfb875bebfe07d63e87ca3e3984cb2f1546"
             ],
-            "markers": "python_version >= '3.5.3'",
+            "markers": "python_version >= '3.4.1'",
             "version": "==1.1.0"
         }
     },

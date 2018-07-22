@@ -38,7 +38,7 @@ class GetTraders(APIView):
     """
 
     def get(self, request, format='json'):
-        followtask.send_feedback_email_task.delay()
+        followtask.start_web_socket.delay()
         traders = User.objects.filter(role=User.TRADER)
         # .annotate(is_followed=Count('book'))
         # .exclude(
