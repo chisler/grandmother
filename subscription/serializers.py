@@ -5,7 +5,7 @@ from rest_framework import serializers
 from external.exchange_api import ExternalExchange
 from django.conf import settings
 from subscription.models import Subscription, DateBalance
-from users.models import User
+
 
 def get_change(current, previous):
     if current == previous:
@@ -74,13 +74,13 @@ class SubscriptionSerializer(serializers.ModelSerializer):
 def _create_orders(trader_wallets, initial_ratio, investor):
     investor_exchange = ExternalExchange(api_key=investor.api_key, secret_key=investor.secret_key)
 
-    if 'BTC' in trader_wallets:
-        # workaround with addition transaction due to absence of more cryptopairs on ethfinex
-        amount = trader_wallets['BTC']
-        price_eth_in_btc = investor_exchange.market_order_buy('ETH/BTC', amount * initial_ratio)
-        eth_amount = amount * initial_ratio / price_eth_in_btc
-        investor_exchange.market_order_sell('ETH/USDT', eth_amount * 0.95)  # fee
-        trader_wallets.pop('BTC')
+    # if 'BTC' in trader_wallets:
+    #     # workaround with addition transaction due to absence of more cryptopairs on ethfinex
+    #     amount = trader_wallets['BTC']
+    #     price_eth_in_btc = investor_exchange.market_order_buy('ETH/BTC', amount * initial_ratio)
+    #     eth_amount = amount * initial_ratio / price_eth_in_btc
+    #     investor_exchange.market_order_sell('ETH/USDT', eth_amount * 0.95)  # fee
+    #     trader_wallets.pop('BTC')
 
     orders = [{currency: amount * initial_ratio} for (currency, amount) in trader_wallets.items()]
     investor_exchange.batch_market_buy(orders)
@@ -95,16 +95,16 @@ class SubscriptionCreateSerializer(serializers.ModelSerializer):
         trader = validated_data['user_followed']
         investor = validated_data['follower']
 
-        # TODO: add money_allocated to investor.initial_money and subtract it from investor.free_money
-
         money_allocated = validated_data['money_allocated'] * 0.95  # to be sure that we will have enough money
+        investor.initial_money += validated_data['money_allocated']
+        investor.free_money -= validated_data['money_allocated']
 
         trader_exchange = ExternalExchange(api_key=trader.api_key, secret_key=trader.secret_key)
-        #trader_wallets = trader_exchange.get_user_wallets()
-        #trader_money = trader_exchange.get_usd_balance_from_wallets(trader_wallets)
-        initial_ratio = money_allocated / (trader.get_total_money() or 1)
+        trader_wallets = trader_exchange.get_user_wallets()
+        trader_money = trader_exchange.get_usd_balance_from_wallets(trader_wallets)
+        initial_ratio = money_allocated / trader_money
 
-        #_create_orders(trader_wallets, initial_ratio, investor)
+        _create_orders(trader_wallets, initial_ratio, investor)
 
         validated_data['initial_ratio'] = initial_ratio
         return super().create(validated_data)
