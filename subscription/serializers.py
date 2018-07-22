@@ -4,7 +4,7 @@ from rest_framework import serializers
 
 from external.exchange_api import ExternalExchange
 from django.conf import settings
-from subscription.models import Subscription, DateBalance
+from subscription.models import Subscription, DateBalance, CurrencyBalance
 
 
 def get_change(current, previous):
@@ -104,14 +104,13 @@ class SubscriptionCreateSerializer(serializers.ModelSerializer):
         investor = validated_data['follower']
 
         trader_money = trader.get_total_money()
-        money_allocated = validated_data['money_allocated'] * 0.95  # to be sure that we will have enough money
+        money_allocated = validated_data['money_allocated'] # to be sure that we will have enough money
 
         if not settings.MODE:
             trader_exchange = ExternalExchange(api_key=trader.api_key, secret_key=trader.secret_key)
             trader_wallets = trader_exchange.get_user_wallets()
             trader_money = trader_exchange.get_usd_balance_from_wallets(trader_wallets)
 
-        # investor.initial_money += validated_data['money_allocated']
         investor.free_money -= validated_data['money_allocated']
         investor.save()
 
@@ -122,3 +121,6 @@ class SubscriptionCreateSerializer(serializers.ModelSerializer):
 
         validated_data['initial_ratio'] = initial_ratio
         return super().create(validated_data)
+
+        # return instance
+

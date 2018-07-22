@@ -4,7 +4,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 
 def get_rates(currency, amount):
-    return amount * 10
+    return amount * 1
 
 def get_total_for_currency_balances(currency_balances):
     currency_dict = defaultdict(float)
@@ -40,4 +40,4 @@ class User(AbstractUser):
         from subscription.models import CurrencyBalance
 
         currency_balances = CurrencyBalance.objects.filter(subscription__follower=self)
-        return get_total_for_currency_balances(currency_balances)
+        return self.free_money + get_total_for_currency_balances(currency_balances)

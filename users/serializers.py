@@ -36,7 +36,7 @@ class UserProfileSerializer(serializers.Serializer):
     subscription = SubscriptionSerializer(many=True)
 
     def get_total_money(self, obj):
-        return obj.get_total_money() + obj.free_money
+        return obj.get_total_money()
 
     def get_start_money(self, obj):
         return obj.initial_money
