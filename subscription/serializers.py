@@ -3,6 +3,7 @@ import datetime
 from rest_framework import serializers
 
 from external.exchange_api import ExternalExchange
+from django.conf import settings
 from subscription.models import Subscription, DateBalance
 from users.models import User
 
@@ -43,7 +44,7 @@ class TraderSerializer(serializers.Serializer):
         return diff
 
     def get_is_followed(self, obj):
-        return False
+        return Subscription.objects.filter(follower_id=settings.SAMPLE_USER, user_followed=obj.id).exists()
 
     def get_followers_count(self, obj):
         return Subscription.objects.filter(user_followed=obj).count()
