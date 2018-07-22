@@ -39,11 +39,10 @@ class GetTraders(APIView):
     """
 
     def get(self, request, format='json'):
-        followtask.start_web_socket.delay()
         traders = User.objects.filter(role=User.TRADER)
-            #.annotate(is_followed=Count('book'))
-            # .exclude(
-            # id__in=Subscription.objects.filter(follower=user_id).values_list('user_followed_id', flat=True)
+        # .annotate(is_followed=Count('book'))
+        # .exclude(
+        # id__in=Subscription.objects.filter(follower=user_id).values_list('user_followed_id', flat=True)
         # )
 
         serializer = TraderSerializer(traders, many=True)

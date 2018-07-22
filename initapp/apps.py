@@ -3,6 +3,7 @@ import os
 from django.apps import AppConfig
 
 
+
 class InitWebSocketsAppConfig(AppConfig):
     name = 'initapp'
 
@@ -13,4 +14,4 @@ class InitWebSocketsAppConfig(AppConfig):
             traders = User.objects.filter(role=User.TRADER)
             for trader in traders:
                 print('DO WEBSOCKET STUFF!!!!!!!111')
-                print(trader)
+                # followtask.start_web_socket.delay(trader.id)

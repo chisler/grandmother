@@ -108,22 +108,8 @@ DATABASES = {
     }
 }
 
-MODE = os.environ.get('MODE', 'dev')
-
-if MODE != 'dev':
-    default_url = 'postgres://chisler@localhost:5432/chisler'
-    DATABASES = {
-        # 'default': {
-        #     'ENGINE': 'django.db.backends.postgresql',
-        #     'NAME': os.environ.get('DATABASE_NAME', 'chisler'),
-        #     'USER': os.environ.get('DB_USER_NAME', 'chisler'),
-        #     'PASSWORD': '',
-        #     'HOST': os.environ.get('DATABASE_HOST', 'localhost'),
-        #     'PORT': '',
-        # }
-        'default': dj_database_url.parse(os.environ.get('DATABASE_URL', default_url))
-    }
-
+# MODE = os.environ.get('MODE', 'dev')
+MODE = None
 
 
 # Password validation

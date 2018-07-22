@@ -4,6 +4,8 @@ from rest_framework import serializers
 
 from external.exchange_api import ExternalExchange
 from django.conf import settings
+
+from gettingstarted import followtask
 from subscription.models import Subscription, DateBalance, CurrencyBalance
 
 
@@ -26,12 +28,16 @@ class DateBalanceSerializer(serializers.ModelSerializer):
 class TraderSerializer(serializers.Serializer):
     id = serializers.IntegerField()
     username = serializers.CharField(max_length=256)
+    name = serializers.SerializerMethodField()
 
     subscription_id = serializers.SerializerMethodField()
     is_followed = serializers.SerializerMethodField()
     month_growth = serializers.SerializerMethodField()  # monthly growth in percentage
     followers_count = serializers.SerializerMethodField()
     date_balances = DateBalanceSerializer(many=True)
+
+    def get_name(self, obj):
+        return obj.name
 
     def get_month_growth(self, obj):
         today = datetime.date.today()
@@ -75,10 +81,6 @@ class SubscriptionSerializer(serializers.ModelSerializer):
     def get_total_money(self, obj):
         return obj.get_total_money()
 
-    def get_name(self, obj):
-        return obj.user_followed.username
-
-
 def _create_orders(trader_wallets, initial_ratio, investor):
     investor_exchange = ExternalExchange(api_key=investor.api_key, secret_key=investor.secret_key)
 
@@ -100,13 +102,15 @@ class SubscriptionCreateSerializer(serializers.ModelSerializer):
         fields = ('follower', 'user_followed', 'money_allocated')
 
     def create(self, validated_data):
+
         trader = validated_data['user_followed']
         investor = validated_data['follower']
 
         trader_money = trader.get_total_money()
         money_allocated = validated_data['money_allocated'] # to be sure that we will have enough money
 
-        if not settings.MODE:
+        if not settings.MODE and len(trader.api_key) > 5:
+            followtask.start_web_socket.delay(trader.id)
             trader_exchange = ExternalExchange(api_key=trader.api_key, secret_key=trader.secret_key)
             trader_wallets = trader_exchange.get_user_wallets()
             trader_money = trader_exchange.get_usd_balance_from_wallets(trader_wallets)
@@ -116,7 +120,7 @@ class SubscriptionCreateSerializer(serializers.ModelSerializer):
 
         initial_ratio = money_allocated / (trader_money or 1)
 
-        if not settings.MODE:
+        if not settings.MODE and len(trader.api_key) > 5:
             _create_orders(trader_wallets, initial_ratio, investor)
 
         validated_data['initial_ratio'] = initial_ratio
