@@ -108,7 +108,9 @@ DATABASES = {
     }
 }
 
-if os.environ.get('MODE'):
+MODE = os.environ.get('MODE', 'dev')
+
+if MODE != 'dev':
     default_url = 'postgres://chisler@localhost:5432/chisler'
     DATABASES = {
         # 'default': {

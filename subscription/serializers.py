@@ -103,16 +103,22 @@ class SubscriptionCreateSerializer(serializers.ModelSerializer):
         trader = validated_data['user_followed']
         investor = validated_data['follower']
 
+        trader_money = trader.get_total_money()
         money_allocated = validated_data['money_allocated'] * 0.95  # to be sure that we will have enough money
-        investor.initial_money += validated_data['money_allocated']
+
+        if not settings.MODE:
+            trader_exchange = ExternalExchange(api_key=trader.api_key, secret_key=trader.secret_key)
+            trader_wallets = trader_exchange.get_user_wallets()
+            trader_money = trader_exchange.get_usd_balance_from_wallets(trader_wallets)
+
+        # investor.initial_money += validated_data['money_allocated']
         investor.free_money -= validated_data['money_allocated']
+        investor.save()
 
-        trader_exchange = ExternalExchange(api_key=trader.api_key, secret_key=trader.secret_key)
-        trader_wallets = trader_exchange.get_user_wallets()
-        trader_money = trader_exchange.get_usd_balance_from_wallets(trader_wallets)
-        initial_ratio = money_allocated / trader_money
+        initial_ratio = money_allocated / (trader_money or 1)
 
-        _create_orders(trader_wallets, initial_ratio, investor)
+        if not settings.MODE:
+            _create_orders(trader_wallets, initial_ratio, investor)
 
         validated_data['initial_ratio'] = initial_ratio
         return super().create(validated_data)
